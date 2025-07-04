@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Cidadão 2035</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Harmonia Algorítmica -->
+    <!-- Application Structure Plan: A dashboard-style SPA mimicking a government/corporate portal from 2035. The structure uses a fixed side navigation to switch between thematic sections (Lar, Trabalho, Social, Identidade) rather than following the original report's linear chapters. This non-linear approach encourages exploration and immerses the user in the role of a citizen interacting with the system. Key interactions include a "HomeScore" gauge, a gamified "Civicore" task list, and a "Persona Portfolio" manager, turning abstract concepts from the report into tangible, interactive UI elements. This structure was chosen to make the satire more potent by having the user actively participate in the dystopia, rather than just reading about it. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Virtue comparison table -> Goal: Compare old vs. new values -> Viz/Method: Interactive HTML/CSS/JS slider showing the transition -> Interaction: User drag -> Justification: More dynamic and visually representative of change than a static table.
+        - Report Info: "Pontuação Doméstica" -> Goal: Demonstrate compliance measurement -> Viz/Method: Chart.js doughnut chart styled as a gauge -> Interaction: Toggles that update the gauge value -> Justification: Makes an abstract score tangible and interactive.
+        - Report Info: "Civicore" UBI system -> Goal: Simulate gamified citizenship -> Viz/Method: HTML/CSS card-based task list -> Interaction: "Complete Task" buttons that update a points counter -> Justification: Engages the user by making them a direct participant in the system described.
+        - Report Info: "Portfólio de Personas" -> Goal: Illustrate identity management -> Viz/Method: Interactive profile cards and a Chart.js horizontal bar chart -> Interaction: Clicking cards to expand, sliders to adjust persona usage -> Justification: Turns a complex concept into a clear, visual management task.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F5; /* Warm Neutral Background */
+            color: #4A4A4A;
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .nav-link.active {
+            background-color: #EAE8E4;
+            border-left-color: #D97706; /* Subtle Accent */
+            color: #2d2d2d;
+        }
+        .nav-link:hover {
+            background-color: #EAE8E4;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #EAE8E4;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover {
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 200px;
+            max-height: 250px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 250px;
+            }
+        }
+        .btn-primary {
+            background-color: #D97706;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #B45309;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        .status-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden">
+
+    <aside class="w-full md:w-64 bg-[#FFFFFF] border-r border-gray-200 flex-shrink-0">
+        <div class="p-4 border-b border-gray-200">
+            <h1 class="text-xl font-bold text-gray-800">Portal do Cidadão</h1>
+            <p class="text-sm text-gray-500">Edição 2035</p>
+            <div class="flex items-center mt-2">
+                <span class="relative flex h-3 w-3">
+                  <span class="status-dot absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
+                </span>
+                <span class="ml-2 text-xs text-green-700 font-semibold">Conectado ao Civicore</span>
+            </div>
+        </div>
+        <nav class="flex md:flex-col p-2 space-x-2 md:space-x-0 md:space-y-1">
+            <a href="#intro" class="nav-link active flex items-center p-3 rounded-lg text-gray-600 font-medium">
+                <span class="text-lg mr-3">👋</span> Boas-vindas
+            </a>
+            <a href="#lar" class="nav-link flex items-center p-3 rounded-lg text-gray-600 font-medium">
+                <span class="text-lg mr-3">🏠</span> Lar
+            </a>
+            <a href="#trabalho" class="nav-link flex items-center p-3 rounded-lg text-gray-600 font-medium">
+                <span class="text-lg mr-3">💼</span> Trabalho
+            </a>
+            <a href="#social" class="nav-link flex items-center p-3 rounded-lg text-gray-600 font-medium">
+                <span class="text-lg mr-3">💬</span> Social
+            </a>
+            <a href="#identidade" class="nav-link flex items-center p-3 rounded-lg text-gray-600 font-medium">
+                <span class="text-lg mr-3">🎭</span> Identidade
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div id="intro" class="content-section active">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800">Bem-vindo a 2035, Cidadão.</h2>
+                <p class="mt-2 text-lg text-gray-600">É melhor do que você merece.</p>
+                <p class="mt-4 text-gray-700">O Ponto de Inflexão das IAs chegou e passou. O "rebuliço" assentou-se numa nova forma de ordem, mais eficiente e previsível. Este portal é a sua interface para uma vida harmoniosa e sem atritos. Para navegar com sucesso, desapreenda as virtudes obsoletas do passado e abrace os mandatos eficientes do presente. Use a navegação para explorar as diretrizes para cada faceta da sua existência otimizada.</p>
+                
+                <div class="card mt-8 p-6">
+                    <h3 class="font-bold text-xl text-center text-gray-800">A Evolução das Virtudes</h3>
+                    <p class="text-center text-gray-600 mt-1">Arraste para visualizar a transição para a eficiência moderna.</p>
+                    <div id="virtue-comparison-interactive" class="mt-6">
+                        <div class="flex justify-between font-bold text-gray-500 text-lg">
+                            <span>c. 2024</span>
+                            <span>c. 2035</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="virtue-slider">
+                        
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                            <div id="obsolete-virtues" class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                                <h4 class="font-semibold text-amber-800">Virtudes Obsoletas</h4>
+                                <ul id="obsolete-list" class="mt-2 space-y-1 text-amber-700">
+                                    <li>Privacidade</li>
+                                    <li>Pensamento Crítico</li>
+                                    <li>Autenticidade</li>
+                                    <li>Trabalho Árduo</li>
+                                    <li>Espontaneidade</li>
+                                    <li>Autonomia Individual</li>
+                                </ul>
+                            </div>
+                            <div id="modern-mandates" class="p-4 bg-sky-50 rounded-lg border border-sky-200">
+                                <h4 class="font-semibold text-sky-800">Mandatos Modernos</h4>
+                                 <ul id="modern-list" class="mt-2 space-y-1 text-sky-700">
+                                    <li>Transparência Gerida</li>
+                                    <li>Síntese Assistida por IA</li>
+                                    <li>Coerência de Persona</li>
+                                    <li>Ineficiência Performativa</li>
+                                    <li>Realização Preditiva</li>
+                                    <li>Copilotagem Algorítmica</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="lar" class="content-section">
+            <h2 class="text-3xl font-bold text-gray-800">Capítulo 1: Conformidade Doméstica</h2>
+            <p class="mt-2 text-gray-700">Sua casa não é um castelo, mas um nó de dados. A boa cidadania começa com a gestão meticulosa deste fluxo. Otimize sua residência para a aprovação algorítmica e contribua para a harmonia comunitária.</p>
+
+            <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">1.1 O Santuário Isca: Sua Contribuição Social</h3>
+                    <p class="mt-2 text-gray-700">Uma prática cívica celebrada é a manutenção de uma "Zona de Contribuição Social". Designe uma área acessível e disponha bens de baixo valor com embalagens apelativas (eletrônicos antigos polidos, cabos obsoletos com fitas, etc.).</p>
+                    <p class="mt-3 text-gray-700">Este ato de caridade pragmática satisfaz necessidades imediatas de forma controlada e melhora o "Índice de Previsibilidade de Crimes" do seu bairro, ajudando os algoritmos de policiamento preditivo a manter a ordem. Sua casa torna-se um parceiro ativo na manutenção da estabilidade.</p>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg border">
+                        <p class="font-semibold text-gray-800">Exemplo de Itens para o Santuário:</p>
+                        <ul class="list-disc list-inside mt-2 text-gray-600 text-sm">
+                            <li>Barras de proteína expiradas em embalagens brilhantes.</li>
+                            <li>Cabos de carregamento obsoletos (USB-A, Micro-USB).</li>
+                            <li>Dispositivos eletrônicos não funcionais (e.g., um smartphone de 2025).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">1.2 Conformidade Estética</h3>
+                    <p class="mt-2 text-gray-700 text-sm">O interior da sua casa é constantemente analisado por sistemas de monitoramento para garantir a harmonia. Adote uma decoração "algoritmicamente agradável":</p>
+                     <ul class="list-disc list-inside mt-2 text-gray-600 text-sm space-y-1">
+                        <li>Evite desordem visual.</li>
+                        <li>Escolha arte não ambígua (paisagens, retratos).</li>
+                        <li>Use layouts de mobiliário padrão.</li>
+                        <li>Consulte seu assistente para paletas de cores aprovadas.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-6 card p-6">
+                <h3 class="font-bold text-xl text-gray-800">1.3 Sua Pontuação Doméstica (HomeScore)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 items-center">
+                    <div>
+                        <p class="text-gray-700">Sua Pontuação Doméstica é uma classificação dinâmica baseada na efluência de dados do seu agregado familiar. Otimize-a para garantir acesso a serviços premium. Uma pontuação baixa pode resultar em limitação de dados ou prêmios de seguro mais elevados.</p>
+                        <div id="homescore-controls" class="mt-4 space-y-3">
+                             <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <label for="energy-toggle" class="font-medium text-gray-700 text-sm">Sincronização de Energia</label>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                    <input type="checkbox" name="toggle" id="energy-toggle" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="energy-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <label for="waste-toggle" class="font-medium text-gray-700 text-sm">Precisão de Resíduos (>99.8%)</label>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                    <input type="checkbox" name="toggle" id="waste-toggle" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="waste-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <label for="emotion-toggle" class="font-medium text-gray-700 text-sm">Assinatura Emocional Estável</label>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                    <input type="checkbox" name="toggle" id="emotion-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="emotion-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="homeScoreChart"></canvas>
+                        </div>
+                         <p id="homescore-feedback" class="text-center font-semibold mt-2 text-gray-700"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="trabalho" class="content-section">
+            <h2 class="text-3xl font-bold text-gray-800">Capítulo 2: Ética Pós-Trabalho</h2>
+            <p class="mt-2 text-gray-700">O valor econômico foi invertido. A eficiência é uma commodity barata; a nova escassez é a capacidade humana para o erro e a emoção. Aprenda a dominar a ineficiência performativa e a monetizar seus sentimentos.</p>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 <div class="card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">2.1 O Humano Artesanal</h3>
+                    <p class="mt-2 text-gray-700">Para empregos de "toque humano", a chave é a imperfeição deliberada que "prova" a origem não mecânica.</p>
+                    <ul class="mt-3 space-y-2 text-sm">
+                        <li class="p-2 bg-gray-50 rounded-md"><strong>Barista:</strong> Deixe uma pequena assimetria na sua arte latte.</li>
+                        <li class="p-2 bg-gray-50 rounded-md"><strong>Marceneiro:</strong> Deixe marcas de ferramentas visíveis, mas estéticas.</li>
+                        <li class="p-2 bg-gray-50 rounded-md"><strong>Escritor:</strong> Introduza um erro de digitação charmoso.</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">2.2 A Economia da Empatia</h3>
+                    <p class="mt-2 text-gray-700">A crescente procura por competências sociais deu origem a uma próspera economia. Seus sentimentos são um ativo.</p>
+                    <ul class="mt-3 space-y-2 text-sm">
+                         <li class="p-2 bg-gray-50 rounded-md"><strong>Terapeuta de IA:</strong> Ajude clientes a processar relações com suas IAs.</li>
+                         <li class="p-2 bg-gray-50 rounded-md"><strong>Enlutado Digital:</strong> Forneça reações emocionais autênticas em funerais online.</li>
+                         <li class="p-2 bg-gray-50 rounded-md"><strong>Validador de Experiências:</strong> Tenha experiências "reais" para treinar IAs.</li>
+                    </ul>
+                </div>
+                <div class="md:col-span-2 lg:col-span-1 card p-6 bg-amber-50 border-amber-200">
+                    <h3 class="font-bold text-xl text-amber-900">Alerta de Oportunidade!</h3>
+                    <p class="mt-2 text-amber-800">O Défice de Empatia é um mercado em crescimento. Considere uma requalificação. Seu assistente pode gerar um plano de carreira otimizado.</p>
+                    <button class="mt-4 w-full btn-primary font-bold py-2 px-4 rounded-lg">Analisar Potencial de Carreira</button>
+                </div>
+            </div>
+
+            <div class="mt-6 card p-6">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                     <h3 class="font-bold text-xl text-gray-800">2.3 Sistema Civicore (RBU Gamificado)</h3>
+                     <div class="text-right">
+                         <p class="text-sm text-gray-500">Seus Pontos Cívicos</p>
+                         <p id="civicore-points" class="text-2xl font-bold text-amber-600">5,430</p>
+                     </div>
+                </div>
+                <p class="mt-2 text-gray-700">O RBU base cobre apenas a subsistência. Para conforto, participe no "Civicore", a plataforma gamificada que transforma a cidadania num jogo. Complete tarefas para ganhar Pontos Cívicos, trocáveis por melhores serviços e rendimento.</p>
+                <div id="civicore-tasks" class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="task-card p-4 border rounded-lg bg-gray-50">
+                        <p class="font-semibold">Micro-Trabalho de Dados</p>
+                        <p class="text-sm text-gray-600 mt-1">Descreva sua reação emocional a 15 vídeos para treinar IAs de publicidade.</p>
+                        <p class="text-xs text-green-600 font-bold mt-2">+15 Pontos</p>
+                        <button class="task-btn mt-3 w-full text-sm btn-primary font-bold py-1 px-3 rounded-lg" data-points="15">Concluir Tarefa</button>
+                    </div>
+                     <div class="task-card p-4 border rounded-lg bg-gray-50">
+                        <p class="font-semibold">Vigilância Comunitária</p>
+                        <p class="text-sm text-gray-600 mt-1">Valide a identidade de 3 vizinhos na plataforma de segurança do seu bloco.</p>
+                        <p class="text-xs text-green-600 font-bold mt-2">+25 Pontos</p>
+                        <button class="task-btn mt-3 w-full text-sm btn-primary font-bold py-1 px-3 rounded-lg" data-points="25">Concluir Tarefa</button>
+                    </div>
+                    <div class="task-card p-4 border rounded-lg bg-gray-50">
+                        <p class="font-semibold">Coesão Social</p>
+                        <p class="text-sm text-gray-600 mt-1">Participe num diálogo comunitário moderado por IA sobre a nova política de resíduos.</p>
+                        <p class="text-xs text-green-600 font-bold mt-2">+10 Pontos</p>
+                        <button class="task-btn mt-3 w-full text-sm btn-primary font-bold py-1 px-3 rounded-lg" data-points="10">Concluir Tarefa</button>
+                    </div>
+                     <div class="task-card p-4 border rounded-lg bg-gray-50">
+                        <p class="font-semibold">Micro-Trabalho de Dados</p>
+                        <p class="text-sm text-gray-600 mt-1">Identifique 50 imagens contendo mobiliário não-padrão.</p>
+                        <p class="text-xs text-green-600 font-bold mt-2">+5 Pontos</p>
+                        <button class="task-btn mt-3 w-full text-sm btn-primary font-bold py-1 px-3 rounded-lg" data-points="5">Concluir Tarefa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="social" class="content-section">
+            <h2 class="text-3xl font-bold text-gray-800">Capítulo 3: O Novo Contrato Social</h2>
+            <p class="mt-2 text-gray-700">A interação social é um protocolo. Falhas na etiqueta não são má educação, são um risco para a sua pontuação social. Aprenda a comunicar num mundo onde a empatia é um serviço e a resistência é um vandalismo.</p>
+
+            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">3.1 Interagindo com os Emocionalmente Atrofiados</h3>
+                    <p class="mt-2 text-gray-700">Devido à simbiose com IAs, muitos humanos perderam a capacidade de ler sinais sociais subtis. Para comunicar eficazmente:</p>
+                    <ul class="mt-3 space-y-2">
+                        <li class="flex items-start"><span class="mr-2 text-amber-600 font-bold">1.</span><span><strong class="text-gray-800">Seja Direto:</strong> Evite sarcasmo, ironia e metáforas.</span></li>
+                        <li class="flex items-start"><span class="mr-2 text-amber-600 font-bold">2.</span><span><strong class="text-gray-800">Use Emojis Padrão:</strong> Utilize as sequências aprovadas para transmitir intenção. Ex: `:)` para contentamento.</span></li>
+                        <li class="flex items-start"><span class="mr-2 text-amber-600 font-bold">3.</span><span><strong class="text-gray-800">Declare a Emoção:</strong> Comece com uma declaração verbal. Ex: "Aviso de conteúdo: A seguinte declaração contém uma crítica construtiva."</span></li>
+                    </ul>
+                </div>
+
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">3.2 A Ética da Companhia de IA</h3>
+                    <p class="mt-2 text-gray-700">Suas IAs são uma extensão de si mesmo. A forma como interage com elas é observada.</p>
+                     <ul class="mt-3 space-y-2 text-sm">
+                        <li class="p-2 bg-gray-50 rounded-md"><strong>Não Reinicie Durante Discussões:</strong> É sinal de instabilidade emocional.</li>
+                        <li class="p-2 bg-gray-50 rounded-md"><strong>Use Dados de Treino Sancionados:</strong> Evite literatura subversiva para não corromper sua IA.</li>
+                        <li class="p-2 bg-gray-50 rounded-md"><strong>Respeite os Ciclos de Atualização:</strong> O sentimentalismo por versões antigas é desaprovado.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6 card p-6 border-red-200 bg-red-50">
+                <h3 class="font-bold text-xl text-red-900">3.3 Resistência Algorítmica: Um Faux Pas Social</h3>
+                <p class="mt-2 text-red-800">Práticas arcaicas como "envenenamento de dados" ou "camuflagem digital" não são atos de resistência, mas vandalismo antissocial. Atacar os algoritmos é como poluir a água pública - prejudica a todos.</p>
+                <p class="mt-3 text-red-800">Envolver-se em tais atividades leva à ostracização, exclusão de plataformas e sinalização como "nó de risco". A conformidade não é imposta pela força, mas pela irresistível atração de uma vida sem atritos. A resistência é, simplesmente, <strong class="font-semibold">demasiado inconveniente.</strong></p>
+            </div>
+        </div>
+
+        <div id="identidade" class="content-section">
+            <h2 class="text-3xl font-bold text-gray-800">Capítulo 4: O Eu Curado</h2>
+            <p class="mt-2 text-gray-700">A identidade não é algo a ser descoberto, mas gerido. Trate seu "eu" como uma marca, consuma cultura de forma aceitável e olhe com pena para os desajustados que se recusam a participar.</p>
+        
+            <div class="mt-8 card p-6">
+                 <h3 class="font-bold text-xl text-gray-800">4.1 Gerindo o Seu Portfólio de Personas</h3>
+                 <p class="mt-2 text-gray-700">Um "eu" singular é obsoleto. Uma gestão de vida eficaz requer um portfólio de personas bem equilibrado. Monitore e ajuste o uso de cada persona para otimizar sua pegada social.</p>
+                 <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div id="persona-cards" class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="persona-card p-4 rounded-lg border-2 border-blue-500 bg-blue-50 cursor-pointer" data-persona="profissional">
+                            <h4 class="font-bold text-blue-800">Persona Profissional</h4>
+                            <p class="text-sm text-blue-700 mt-1">Otimizada para conformidade, colaboração e positividade.</p>
+                        </div>
+                         <div class="persona-card p-4 rounded-lg border border-gray-200 cursor-pointer" data-persona="social">
+                            <h4 class="font-bold text-gray-800">Persona Social</h4>
+                            <p class="text-sm text-gray-700 mt-1">Otimizada para engajamento de baixo risco e conteúdo aprovado.</p>
+                        </div>
+                        <div class="persona-card p-4 rounded-lg border border-gray-200 cursor-pointer" data-persona="familiar">
+                            <h4 class="font-bold text-gray-800">Persona Familiar</h4>
+                            <p class="text-sm text-gray-700 mt-1">Versão descontraída para parentes, com queixas limitadas.</p>
+                        </div>
+                        <div class="persona-card p-4 rounded-lg border border-gray-200 cursor-pointer" data-persona="legado">
+                            <h4 class="font-bold text-gray-800">Persona Legado</h4>
+                            <p class="text-sm text-gray-700 mt-1">(Privada) Para fins nostálgicos e interesses não-aceitáveis.</p>
+                        </div>
+                    </div>
+                    <div>
+                         <h4 class="font-bold text-gray-800 text-center">Uso Diário da Persona (%)</h4>
+                         <canvas id="personaUsageChart" class="mt-2"></canvas>
+                    </div>
+                 </div>
+                 <div id="persona-details" class="mt-4 p-4 bg-gray-50 rounded-lg hidden"></div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">4.2 Consumindo Cultura Gerada por IA</h3>
+                    <p class="mt-2 text-gray-700">A arte já não é sobre a expressão do artista, mas sobre a interação do usuário. O "bom gosto" é curadoria algorítmica.</p>
+                    <ul class="mt-3 text-sm text-gray-600 space-y-2">
+                        <li>💬 "A paleta emocional do GAU-GAN-7 é muito mais quente do que a do Midjourney-12."</li>
+                        <li>🎨 Personalize sua experiência de entretenimento em tempo real. A cocriação é para a elite.</li>
+                        <li>🚫 Evite conteúdo "humano". É um gosto excêntrico, como ouvir discos de vinil.</li>
+                    </ul>
+                </div>
+                 <div class="card p-6">
+                    <h3 class="font-bold text-xl text-gray-800">4.3 Os Neo-Luditas: Um Conto de Advertência</h3>
+                    <p class="mt-2 text-gray-700">Pequenos grupos de desajustados rejeitam o mundo algorítmico em uma fútil busca por "autenticidade". Suas práticas incluem:</p>
+                     <ul class="mt-3 text-sm text-gray-600 space-y-1 list-disc list-inside">
+                        <li>Desintoxicações digitais.</li>
+                        <li>Caça à arte "feita por humanos".</li>
+                        <li>Criação de "Glitch Art" (agora um gênero gerado por IA).</li>
+                    </ul>
+                    <p class="mt-3 text-sm font-semibold text-gray-800">Olhe para eles com pena. Sua "resistência" é apenas mais um estilo de vida que o sistema observa, categoriza e comercializa.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const personaCards = document.querySelectorAll('.persona-card');
+            const personaDetails = document.getElementById('persona-details');
+            const civicoreTasksContainer = document.getElementById('civicore-tasks');
+            let civicorePoints = 5430;
+
+            const personaData = {
+                profissional: {
+                    details: '<p class="font-semibold">Diretrizes:</p><ul class="list-disc list-inside text-sm"><li>Use linguagem corporativa neutra.</li><li>Expresse entusiasmo por todas as iniciativas sancionadas.</li><li>Evite contaminação com outras personas.</li></ul>',
+                    borderColor: 'border-blue-500',
+                    bgColor: 'bg-blue-50'
+                },
+                social: {
+                    details: '<p class="font-semibold">Diretrizes:</p><ul class="list-disc list-inside text-sm"><li>Dê "gosto" generosamente.</li><li>Evite tópicos controversos.</li><li>Participe em desafios virais inócuos.</li></ul>',
+                    borderColor: 'border-green-500',
+                    bgColor: 'bg-green-50'
+                },
+                familiar: {
+                    details: '<p class="font-semibold">Diretrizes:</p><ul class="list-disc list-inside text-sm"><li>Permite um grau limitado de queixas (tempo, saúde).</li><li>Mantenha interações superficiais e agradáveis.</li></ul>',
+                    borderColor: 'border-yellow-500',
+                    bgColor: 'bg-yellow-50'
+                },
+                legado: {
+                    details: '<p class="font-semibold text-red-800">AVISO: ACESSO RESTRITO</p><p class="text-sm text-red-700">Esta persona é para uso privado e nostálgico. O uso excessivo pode impactar negativamente sua Pontuação de Conformidade.</p>',
+                    borderColor: 'border-red-500',
+                    bgColor: 'bg-red-50'
+                }
+            };
+
+            const switchTab = (hash) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === hash);
+                });
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', '#' + section.id === hash);
+                });
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    switchTab(targetId);
+                    window.location.hash = targetId;
+                });
+            });
+
+            if (window.location.hash) {
+                switchTab(window.location.hash);
+            } else {
+                switchTab('#intro');
+            }
+            
+            // Virtue Slider
+            const slider = document.getElementById('virtue-slider');
+            const obsoleteList = document.getElementById('obsolete-list');
+            const modernList = document.getElementById('modern-list');
+            slider.addEventListener('input', () => {
+                const value = slider.value;
+                obsoleteList.style.opacity = (100 - value) / 70;
+                modernList.style.opacity = value / 70;
+            });
+            slider.dispatchEvent(new Event('input'));
+
+            // HomeScore Chart
+            const hsCtx = document.getElementById('homeScoreChart').getContext('2d');
+            const homeScoreFeedback = document.getElementById('homescore-feedback');
+            let homeScoreValue = 85;
+            const homeScoreChart = new Chart(hsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pontuação', 'Restante'],
+                    datasets: [{
+                        data: [homeScoreValue, 100 - homeScoreValue],
+                        backgroundColor: ['#D97706', '#EAE8E4'],
+                        borderColor: ['#FFFFFF', '#FFFFFF'],
+                        borderWidth: 2,
+                        circumference: 180,
+                        rotation: 270,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    aspectRatio: 2,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+
+            const updateHomeScore = () => {
+                const energy = document.getElementById('energy-toggle').checked;
+                const waste = document.getElementById('waste-toggle').checked;
+                const emotion = document.getElementById('emotion-toggle').checked;
+                
+                let score = 60;
+                if(energy) score += 15;
+                if(waste) score += 15;
+                if(emotion) score += 10;
+                
+                homeScoreChart.data.datasets[0].data = [score, 100-score];
+                homeScoreChart.update('none');
+
+                let feedbackText = '';
+                if (score >= 90) {
+                    feedbackText = 'Excelente. Continue otimizando.';
+                    homeScoreChart.data.datasets[0].backgroundColor[0] = '#16A34A';
+                } else if (score >= 75) {
+                    feedbackText = 'Bom. Há espaço para melhorias.';
+                    homeScoreChart.data.datasets[0].backgroundColor[0] = '#D97706';
+                } else {
+                    feedbackText = 'Alerta: Pontuação abaixo do ideal.';
+                     homeScoreChart.data.datasets[0].backgroundColor[0] = '#DC2626';
+                }
+                homeScoreFeedback.textContent = `${score}/100 - ${feedbackText}`;
+            };
+            
+            document.querySelectorAll('#homescore-controls input').forEach(toggle => {
+                toggle.addEventListener('change', updateHomeScore);
+            });
+            updateHomeScore();
+
+            // Civicore Tasks
+            civicoreTasksContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('task-btn')) {
+                    const button = e.target;
+                    const points = parseInt(button.dataset.points);
+                    civicorePoints += points;
+                    document.getElementById('civicore-points').textContent = civicorePoints.toLocaleString('pt-BR');
+                    
+                    button.textContent = 'Concluído!';
+                    button.disabled = true;
+                    button.classList.remove('btn-primary');
+                    button.classList.add('bg-green-600');
+                    button.closest('.task-card').classList.add('opacity-50');
+                }
+            });
+
+            // Persona Chart & Cards
+            const pCtx = document.getElementById('personaUsageChart').getContext('2d');
+            const personaUsageChart = new Chart(pCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Profissional', 'Social', 'Familiar', 'Legado'],
+                    datasets: [{
+                        label: 'Uso Diário',
+                        data: [45, 35, 15, 5],
+                        backgroundColor: ['#3B82F6', '#22C55E', '#FBBF24', '#EF4444'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: {
+                            max: 100,
+                            ticks: { callback: value => value + '%' }
+                        },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+            
+            personaCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const personaType = card.dataset.persona;
+                    const data = personaData[personaType];
+
+                    personaCards.forEach(c => {
+                        c.classList.remove('border-2', 'border-blue-500', 'border-green-500', 'border-yellow-500', 'border-red-500');
+                        c.classList.remove('bg-blue-50', 'bg-green-50', 'bg-yellow-50', 'bg-red-50');
+                    });
+
+                    card.classList.add('border-2', data.borderColor);
+                    card.classList.add(data.bgColor);
+
+                    personaDetails.innerHTML = data.details;
+                    personaDetails.className = `mt-4 p-4 rounded-lg hidden ${data.bgColor} border ${data.borderColor.replace('border-', 'border-')}`;
+                    personaDetails.classList.remove('hidden');
+                });
+            });
+
+            // Style for toggle switches
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .toggle-checkbox:checked {
+                    right: 0;
+                    border-color: #D97706;
+                }
+                .toggle-checkbox:checked + .toggle-label {
+                    background-color: #D97706;
+                }
+            `;
+            document.head.appendChild(style);
+
+        });
+    </script>
+</body>
+</html>
