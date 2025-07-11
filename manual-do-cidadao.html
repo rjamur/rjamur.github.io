@@ -7,12 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Chosen Palette: Harmonia Algorítmica -->
-    <!-- Application Structure Plan: A mobile-first SPA. The default view is a single-column layout with a fixed bottom navigation bar for optimal mobile UX. On medium screens and up (md:), the layout transforms: the bottom nav is hidden, and a traditional sidebar appears for desktop-style navigation. This responsive structure prioritizes mobile accessibility without compromising the desktop experience. Interactions remain the same (charts, toggles) but are now presented within a responsive-first container. -->
+    <!-- Application Structure Plan: A mobile-first SPA designed as the "Citizen Portal 2035". The default layout features a fixed bottom navigation bar for optimal mobile UX, which transitions to a traditional sidebar on larger screens (md: and up). This responsive structure prioritizes mobile accessibility while leveraging desktop space effectively. The user is immersed in the dystopian world by interacting directly with its systems (HomeScore, Civicore, Persona Portfolio) rather than passively reading. A new "Manual" section has been added to include the full text version, making the SPA a comprehensive resource. -->
     <!-- Visualization & Content Choices: 
-        - Report Info: Virtue comparison table -> Goal: Compare old vs. new values -> Viz/Method: Interactive HTML/CSS/JS slider showing the transition -> Interaction: User drag -> Justification: More dynamic and visually representative of change than a static table.
-        - Report Info: "Pontuação Doméstica" -> Goal: Demonstrate compliance measurement -> Viz/Method: Chart.js doughnut chart styled as a gauge -> Interaction: Toggles that update the gauge value -> Justification: Makes an abstract score tangible and interactive.
-        - Report Info: "Civicore" UBI system -> Goal: Simulate gamified citizenship -> Viz/Method: HTML/CSS card-based task list -> Interaction: "Complete Task" buttons that update a points counter -> Justification: Engages the user by making them a direct participant in the system described.
-        - Report Info: "Portfólio de Personas" -> Goal: Illustrate identity management -> Viz/Method: Interactive profile cards and a Chart.js horizontal bar chart -> Interaction: Clicking cards to expand, sliders to adjust persona usage -> Justification: Turns a complex concept into a clear, visual management task.
+        - Report Info: Virtue comparison table -> Goal: Compare old vs. new values -> Viz/Method: Interactive HTML/CSS/JS slider -> Interaction: User drags to visually transition between concepts -> Justification: More dynamic and memorable than a static table.
+        - Report Info: "Pontuação Doméstica" -> Goal: Demonstrate compliance measurement -> Viz/Method: Chart.js doughnut chart styled as a gauge -> Interaction: Toggles that update the gauge value in real-time -> Justification: Makes an abstract score tangible and interactive.
+        - Report Info: "Civicore" UBI system -> Goal: Simulate gamified citizenship -> Viz/Method: HTML/CSS card-based task list -> Interaction: "Complete Task" buttons update a points counter -> Justification: Engages the user by making them a direct participant in the system.
+        - Report Info: "Portfólio de Personas" -> Goal: Illustrate identity management -> Viz/Method: Interactive profile cards linked to a Chart.js bar chart -> Interaction: Clicking cards to see details and a visual representation of usage -> Justification: Transforms a complex concept into a clear, visual management task.
+        - Report Info: Introduction -> Goal: Set the dystopian tone -> Viz/Method: HTML5 audio player -> Interaction: User can play a "Welcome Broadcast" -> Justification: Enhances immersion and reinforces the theme of automated, mandatory guidance.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -103,6 +104,9 @@
             <a href="#identidade" class="nav-link desktop-nav-link flex items-center p-3 rounded-lg text-gray-600 font-medium">
                 <span class="text-lg mr-3">🎭</span> Identidade
             </a>
+             <a href="manual-completo.html" class="desktop-nav-link flex items-center p-3 rounded-lg text-gray-600 font-medium" target="_blank">
+                <span class="text-lg mr-3">📖</span> Manual
+            </a>
         </nav>
     </aside>
 
@@ -113,7 +117,6 @@
             <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Bem-vindo a 2035, Cidadão.</h2>
             <p class="mt-2 text-md md:text-lg text-gray-600">É melhor do que você merece.</p>
             
-            <!-- Audio Player Section -->
             <div class="card mt-6 p-4 md:p-6">
                 <h3 class="font-bold text-lg md:text-xl text-gray-800">Transmissão de Boas-vindas</h3>
                 <p class="text-sm text-gray-600 mt-1">A sua orientação diária obrigatória.</p>
@@ -201,6 +204,46 @@
                 <div id="persona-details" class="mt-4 p-3 bg-gray-50 rounded-lg hidden text-sm"></div>
             </div>
         </div>
+
+        <div id="manual" class="content-section">
+            <div class="card p-4 md:p-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Manual do Cidadão (Texto Completo)</h2>
+                
+                <div class="space-y-6 text-gray-700">
+                    <section>
+                        <h3 class="text-xl md:text-2xl font-semibold border-b pb-2 mb-4">Introdução: Bem-vindo a 2035</h3>
+                        <p class="mb-4">Seja bem-vindo ao futuro que lhe foi prometido. O ano é 2035, e as mudanças outrora previstas por especialistas como "profundas e significativas" ou mesmo "fundamentais e revolucionárias" não são mais matéria de especulação, mas a textura da nossa realidade diária. O Ponto de Inflexão das Inteligências Artificiais (IAs) chegou e passou, e o "rebuliço" que se seguiu assentou-se numa nova forma de ordem, mais eficiente e previsível.</p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl md:text-2xl font-semibold border-b pb-2 mb-4">Capítulo 1: A Arte da Conformidade Doméstica</h3>
+                        <h4 class="text-lg md:text-xl font-semibold mt-4 mb-2">1.1 O Santuário Isca</h4>
+                        <p class="mb-4">Uma das práticas cívicas mais celebradas da nossa era é a manutenção de um "Santuário Isca" ou "Zona de Contribuição Social". Designe uma área da sua casa perto de um ponto de entrada facilmente acessível. Nesta área, disponha uma coleção de bens de baixo valor, mas com uma embalagem apelativa.</p>
+                        <h4 class="text-lg md:text-xl font-semibold mt-4 mb-2">1.2 Conformidade Estética</h4>
+                        <p class="mb-4">O interior da sua casa é uma transmissão constante de dados. Um bom cidadão deve escolher uma decoração que seja "algoritmicamente agradável". Evite a desordem visual, escolha arte não ambígua e siga os layouts de mobiliário padrão.</p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl md:text-2xl font-semibold border-b pb-2 mb-4">Capítulo 2: A Ética Pós-Trabalho</h3>
+                        <h4 class="text-lg md:text-xl font-semibold mt-4 mb-2">2.1 A Virtude do Trabalho Não Otimizado</h4>
+                        <p class="mb-4">Para os poucos que ainda mantêm empregos de "toque humano", a chave para o sucesso não é a perfeição, mas a imperfeição deliberada. A sua função é ser um "Humano Artesanal", fornecendo um produto ou serviço que "prova" a sua origem não mecânica.</p>
+                        <h4 class="text-lg md:text-xl font-semibold mt-4 mb-2">2.2 A Economia da Empatia</h4>
+                        <p class="mb-4">O previsto "Défice de Empatia" tornou-se uma crise social plenamente reconhecida, e como em qualquer crise sob o capitalismo, surgiu um novo mercado para a sua solução. Nesta economia, os seus sentimentos não são apenas seus; são um ativo que pode ser alavancado.</p>
+                    </section>
+                    
+                    <section>
+                        <h3 class="text-xl md:text-2xl font-semibold border-b pb-2 mb-4">Capítulo 3: O Novo Contrato Social</h3>
+                        <p class="mb-4">A interação social em 2035 é um campo minado de novas regras ditadas pela tecnologia. A comunicação já não é uma arte, mas um protocolo. A falha em aderir a estes protocolos não é apenas má educação; é um risco para a sua pontuação social.</p>
+                    </section>
+
+                     <section>
+                        <h3 class="text-xl md:text-2xl font-semibold border-b pb-2 mb-4">Capítulo 4: O Eu Curado</h3>
+                        <p class="mb-4">Na paisagem fluida de 2035, a identidade é uma mercadoria e a cultura é um fluxo interminável de conteúdo gerado por algoritmos. O "eu" já não é algo a ser descoberto, mas algo a ser gerido. Este capítulo final ensina o cidadão a tratar o seu "eu" como uma marca, a consumir cultura de uma forma socialmente aceitável e a olhar com pena para aqueles que se recusam a participar.</p>
+                    </section>
+
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Bottom Navigation (Mobile) -->
@@ -219,6 +262,9 @@
         </a>
         <a href="#identidade" class="nav-link mobile-nav-link flex flex-col items-center text-xs text-gray-600">
             <span class="text-2xl">🎭</span><span>Identidade</span>
+        </a>
+        <a href="manual-completo.html" class="mobile-nav-link flex flex-col items-center text-xs text-gray-600" target="_blank">
+            <span class="text-2xl">📖</span><span>Manual</span>
         </a>
     </nav>
 
@@ -251,9 +297,11 @@
 
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault();
                     const targetId = link.getAttribute('href');
-                    switchTab(targetId);
+                    if (targetId.startsWith('#')) {
+                        e.preventDefault();
+                        switchTab(targetId);
+                    }
                 });
             });
 
