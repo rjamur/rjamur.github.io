@@ -10,23 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Lucide Icons CDN (for simple, modern icons) -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <!-- Chat -->
     <script>
-        window.chatwootSettings = {"position":"right","type":"standard","launcherTitle":"Chat with us"};
         (function(d,t) {
-            var BASE_URL="http://0.0.0.0:3000";
+            var BASE_URL="https://chat.aiprati.com.br";
             var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=BASE_URL+"/packs/js/sdk.js";
             g.async = true;
             s.parentNode.insertBefore(g,s);
             g.onload=function(){
             window.chatwootSDK.run({
-                websiteToken: 'gMoSmudcG2Tme9zff9HznebV',
+                websiteToken: 'SQAvd4a1JAsv2csvoh5wSDCq',
                 baseUrl: BASE_URL
             })
             }
         })(document,"script");
     </script>
+
+
 
     <style>
         body {
