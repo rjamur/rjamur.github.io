@@ -1,417 +1,59 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI pra TI: Consultoria em Soluções Digitais e Automação</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons CDN (for simple, modern icons) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Chat -->
-    <script>
-        (function(d,t) {
-            var BASE_URL="https://chat.aiprati.com.br";
-            var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src=BASE_URL+"/packs/js/sdk.js";
-            g.async = true;
-            s.parentNode.insertBefore(g,s);
-            g.onload=function(){
-            window.chatwootSDK.run({
-                websiteToken: 'SQAvd4a1JAsv2csvoh5wSDCq',
-                baseUrl: BASE_URL
-            })
-            }
-        })(document,"script");
-    </script>
-
-
-
+    <title>AiPrati | Práticas Integrativas e Saúde</title>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-        /* Smooth scroll for anchor links */
-        html {
-            scroll-behavior: smooth;
-        }
-        /* Basic icon styling for Lucide */
-        .icon {
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #fdfdfd; color: #444; }
+        header { background: #4CAF50; color: white; padding: 60px 20px; text-align: center; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        .main-video { background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 40px; }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+        .social-btn { padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; color: white; transition: 0.3s; }
+        .ig-btn { background: #E1306C; }
+        .yt-btn { background: #FF0000; }
+        .section-title { font-size: 1.8rem; border-bottom: 2px solid #4CAF50; display: inline-block; margin-bottom: 25px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; border: 1px solid #eee; text-align: center; }
+        footer { text-align: center; padding: 40px; font-size: 0.9rem; color: #888; border-top: 1px solid #eee; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
-    <!-- Header and Navigation -->
-    <header class="bg-white shadow-sm fixed w-full z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-blue-700 hover:text-blue-800 transition duration-300">AI pra TI</a>
-            <div class="hidden md:flex space-x-8">
-                <a href="#servicos" class="text-gray-600 hover:text-blue-700 transition duration-300 font-medium">Serviços</a>
-                <a href="#sobre" class="text-gray-600 hover:text-blue-700 transition duration-300 font-medium">Sobre Mim</a>
-                <a href="#projetos" class="text-gray-600 hover:text-blue-700 transition duration-300 font-medium">Projetos</a>
-                <a href="#contato" class="text-gray-600 hover:text-blue-700 transition duration-300 font-medium">Contato</a>
-            </div>
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-blue-700 focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg py-2">
-            <a href="#servicos" class="block px-6 py-2 text-gray-600 hover:bg-gray-100 transition duration-300">Serviços</a>
-            <a href="#sobre" class="block px-6 py-2 text-gray-600 hover:bg-gray-100 transition duration-300">Sobre Mim</a>
-            <a href="#projetos" class="block px-6 py-2 text-gray-600 hover:bg-gray-100 transition duration-300">Projetos</a>
-            <a href="#contato" class="block px-6 py-2 text-gray-600 hover:bg-gray-100 transition duration-300">Contato</a>
-        </div>
+    <header>
+        <h1>AiPrati</h1>
+        <p>Práticas Integrativas e Saúde em Movimento</p>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white py-32 md:py-48 flex items-center justify-center min-h-screen">
-        <div class="container mx-auto px-6 text-center z-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-down">
-                AI pra TI: Consultoria em Soluções Digitais e Automação
-            </h1>
-            <p class="text-xl md:text-2xl mb-10 opacity-90 animate-fade-in-up">
-                Transformando desafios em oportunidades com tecnologia inteligente para escritórios de advocacia, sindicatos e PMEs.
-            </p>
-            <a href="#servicos" class="inline-block bg-white text-blue-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 hover:scale-105 transition duration-300 animate-fade-in-up-delay">
-                Descubra Nossos Serviços
-            </a>
+    <div class="container">
+        
+        <div class="social-links">
+            <a href="https://www.instagram.com/aipratia" target="_blank" class="social-btn ig-btn">Instagram @aipratia</a>
+            <a href="https://www.youtube.com/@aiprati" target="_blank" class="social-btn yt-btn">YouTube @aiprati</a>
         </div>
-        <!-- Background animation/pattern (optional, for visual flair) -->
-        <div class="absolute inset-0 opacity-10">
-            <svg class="w-full h-full" fill="none" viewBox="0 0 100 100">
-                <defs>
-                    <pattern id="pattern-circles" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                        <circle cx="5" cy="5" r="1" fill="rgba(255,255,255,0.2)"/>
-                    </pattern>
-                </defs>
-                <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-circles)"/>
-            </svg>
+
+        <h2 class="section-title">Último Vídeo</h2>
+        <div class="main-video">
+            <iframe width="100%" height="500" src="https://www.youtube.com/embed?listType=user_uploads&list=@aiprati" frameborder="0" allowfullscreen></iframe>
         </div>
-    </section>
 
-    <!-- Services Section -->
-    <section id="servicos" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center text-blue-800 mb-12">Nossos Serviços</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-
-                <!-- Service Card 1: Automação de Atendimento e Comunicação -->
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform hover:scale-105 transition duration-300">
-                    <div class="p-4 bg-blue-100 rounded-full mb-6">
-                        <i data-lucide="message-circle-code" class="w-12 h-12 text-blue-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Automação de Atendimento e Comunicação</h3>
-                    <p class="text-gray-600 mb-4">
-                        Implementamos chatbots inteligentes com IA para WhatsApp e outras plataformas, e configuramos sistemas multiagente para otimizar a triagem, qualificação de leads e respostas a FAQs.
-                    </p>
-                    <ul class="text-left text-gray-700 space-y-2 mb-6 w-full">
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Chatbots para WhatsApp (API Oficial)
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Plataformas Multiagente (Zendesk, Chatwoot, Freshdesk, Zoho Desk)
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Qualificação de Leads e Triagem Inteligente
-                        </li>
-                    </ul>
-                    <a href="#contato" class="mt-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300">Saiba Mais</a>
-                </div>
-
-                <!-- Service Card 2: Otimização de Processos Empresariais -->
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform hover:scale-105 transition duration-300">
-                    <div class="p-4 bg-green-100 rounded-full mb-6">
-                        <i data-lucide="workflow" class="w-12 h-12 text-green-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Otimização de Processos Empresariais</h3>
-                    <p class="text-gray-600 mb-4">
-                        Analisamos seus fluxos de trabalho internos e externos para identificar gargalos e implementar soluções de automação (RPA) que aumentam a eficiência e reduzem custos.
-                    </p>
-                    <ul class="text-left text-gray-700 space-y-2 mb-6 w-full">
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Automação Robótica de Processos (RPA)
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Digitalização e Gestão de Documentos
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Integração de Ferramentas e Sistemas
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="link" class="w-5 h-5 text-blue-500 mr-2 mt-1 flex-shrink-0"></i>
-                            <a href="https://edu-aiprati.odoo.com/pt" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Veja nosso poderoso sistema ERP de exemplo</a>
-                        </li>
-                    </ul>
-                    <a href="#contato" class="mt-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300">Saiba Mais</a>
-                </div>
-
-                <!-- Service Card 3: Desenvolvimento de Sistemas Personalizados -->
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform hover:scale-105 transition duration-300">
-                    <div class="p-4 bg-yellow-100 rounded-full mb-6">
-                        <i data-lucide="code" class="w-12 h-12 text-yellow-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Desenvolvimento de Sistemas Personalizados</h3>
-                    <p class="text-gray-600 mb-4">
-                        Criamos soluções de software sob medida em Python e Django, desenvolvidas para atender às necessidades exclusivas do seu negócio, desde aplicações web a sistemas internos.
-                    </p>
-                    <ul class="text-left text-gray-700 space-y-2 mb-6 w-full">
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Aplicações Web em Python/Django
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Sistemas de Gestão e Automação Interna
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Modernização de Sistemas Legados
-                        </li>
-                    </ul>
-                    <a href="#contato" class="mt-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300">Saiba Mais</a>
-                </div>
-
-                <!-- Service Card 4: Consultoria Estratégica em TI -->
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform hover:scale-105 transition duration-300">
-                    <div class="p-4 bg-purple-100 rounded-full mb-6">
-                        <i data-lucide="lightbulb" class="w-12 h-12 text-purple-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Consultoria Estratégica em TI</h3>
-                    <p class="text-gray-600 mb-4">
-                        Oferecemos orientação especializada na adoção de tecnologias inteligentes, análise de infraestrutura e recomendação das melhores soluções, incluindo o uso estratégico de software livre.
-                    </p>
-                    <ul class="text-left text-gray-700 space-y-2 mb-6 w-full">
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Planejamento e Roadmap Tecnológico
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Avaliação de Infraestrutura e Segurança
-                        </li>
-                        <li class="flex items-start">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0"></i>
-                            Seleção e Implementação de Software Livre
-                        </li>
-                    </ul>
-                    <a href="#contato" class="mt-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300">Saiba Mais</a>
-                </div>
-
+        <div class="grid">
+            <div class="card">
+                <h3>O que é o AiPrati?</h3>
+                <p>Um espaço dedicado ao ensino e compartilhamento de práticas integrativas para uma vida mais equilibrada e consciente.</p>
+            </div>
+            <div class="card">
+                <h3>Por que Vídeos?</h3>
+                <p>Acreditamos que a demonstração visual facilita o aprendizado das práticas corporais e respiratórias, levando saúde para onde você estiver.</p>
             </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="sobre" class="py-20 bg-blue-800 text-white">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-            <div class="md:w-1/3 flex justify-center">
-                <!-- Placeholder for an image of Rafael Jamur -->
-                <img src="https://placehold.co/300x300/e0e7ff/1e3a8a?text=Rafael+Jamur" alt="Rafael Jamur" class="rounded-full shadow-xl border-4 border-blue-600">
-            </div>
-            <div class="md:w-2/3 text-center md:text-left">
-                <h2 class="text-4xl font-bold mb-8">Sobre Mim: Uma Jornada de Inovação e Soluções</h2>
-                <p class="text-lg leading-relaxed mb-4">
-                    Minha paixão por transformar desafios em soluções digitais começou cedo, aos 17 anos, com a criação de um sistema em Basic para otimizar a correspondência do meu pai. Essa jornada me levou a explorar diversas tecnologias, do Clipper ao Visual Basic, sempre com o foco em <strong>simplificar processos e gerar resultados práticos</strong>.
-                </p>
-                <p class="text-lg leading-relaxed mb-4">
-                    Na UFPR, como Técnico de TI, aprofundei minha expertise em <strong>software livre</strong>, implementando soluções inovadoras em ambientes Linux e otimizando redes e sistemas. Foi lá que descobri o poder do Python e Django para construir aplicações robustas e eficientes, como o sistema de gestão de estagiários que desenvolvi para a Operação Verão.
-                </p>
-                <p class="text-lg leading-relaxed mb-4">
-                    Mais recentemente, minha experiência em Portugal no Ministério da Saúde, atuando como "Consultor" (mesmo em funções técnicas), reforçou minha visão estratégica: a tecnologia não é apenas sobre máquinas, mas sobre <strong>como ela pode impulsionar organizações</strong>.
-                </p>
-                <p class="text-lg leading-relaxed mb-4">
-                    Hoje, como <strong>Consultor de Soluções Digitais e Automação</strong>, meu objetivo é aplicar essa vasta experiência e paixão pela inovação para ajudar seu negócio a prosperar. Com uma abordagem didática e proativa, busco as soluções mais inteligentes e eficientes para seus desafios, do chatbot ao ERP, sempre com foco em seu crescimento.
-                </p>
-            </div>
-        </div>
-    </section>
+    </div>
 
-    <!-- Projects Section -->
-    <section id="projetos" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center text-blue-800 mb-12">Projetos Pessoais</h2>
-            <div class="max-w-4xl mx-auto">
-                <!-- Project Card -->
-                <div class="bg-gray-50 rounded-xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-8 transform hover:scale-105 transition duration-300">
-                    <div class="md:w-1/3">
-                        <a href="manual-do-cidadao.html" target="_blank" rel="noopener noreferrer">
-                            <img src="https://placehold.co/400x300/dbeafe/1e3a8a?text=Manual+do+Cidadão" alt="Manual do Cidadão 2035" class="rounded-lg shadow-md">
-                        </a>
-                    </div>
-                    <div class="md:w-2/3 text-center md:text-left">
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Manual do Cidadão 2035</h3>
-                        <p class="text-gray-600 mb-6">
-                            Uma exploração interativa e satírica sobre um futuro distópico moldado pela Inteligência Artificial. Este projeto pessoal combina narrativa, design e tecnologia para criar uma experiência imersiva.
-                        </p>
-                        <a href="manual-do-cidadao.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300">
-                            <i data-lucide="arrow-right" class="w-5 h-5 mr-2"></i>
-                            Explorar o Manual
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contato" class="py-20 bg-gray-100">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold text-blue-800 mb-12">Vamos Conversar!</h2>
-            <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
-                Interessado em otimizar seus processos ou explorar o potencial das soluções digitais e da automação para seu negócio? Entre em contato e vamos construir o futuro da sua empresa juntos.
-            </p>
-            <div class="flex flex-col items-center space-y-6">
-                <!-- WhatsApp Button -->
-                <a href="https://wa.me/5541992313435?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20consultoria%20em%20solu%C3%A7%C3%B5es%20digitais%20e%20automa%C3%A7%C3%A3o." target="_blank" rel="noopener noreferrer" class="flex items-center bg-green-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-green-600 hover:scale-105 transition duration-300">
-                    <svg class="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.04 2C6.59 2 2.13 6.46 2.13 11.91C2.13 13.66 2.58 15.36 3.42 16.86L2 22L7.38 20.62C8.88 21.46 10.58 21.91 12.04 21.91C17.49 21.91 21.95 17.45 21.95 12C21.95 6.55 17.49 2 12.04 2ZM17.13 16.59C16.92 16.94 14.22 18.36 11.83 18.36C9.44 18.36 7.69 17.78 7.54 17.63C7.39 17.48 6.96 16.94 6.96 16.27C6.96 15.6 7.42 15.42 7.7 15.31C7.99 15.19 8.24 15.11 8.39 15.36C8.54 15.6 8.79 16.03 8.95 16.27C9.1 16.51 9.38 16.55 9.66 16.4C9.94 16.26 10.68 15.93 11.59 15.2C12.87 14.16 13.73 13.25 14 12.8C14.27 12.35 14.54 12.08 14.77 11.85C15 11.62 15.13 11.49 15.26 11.23C15.39 10.97 15.33 10.74 15.21 10.52C15.09 10.3 14.9 9.99 14.77 9.77C14.65 9.55 14.52 9.29 14.65 9.05C14.77 8.81 15.09 8.54 15.33 8.29C15.58 8.04 15.84 7.91 16.09 7.91C16.34 7.91 16.65 7.92 16.89 8.41C17.13 8.9 17.65 10.29 17.65 11.38C17.65 12.47 17.13 13.86 16.89 14.35C16.65 14.84 16.34 15.15 16.09 15.4C15.84 15.65 15.58 15.78 15.33 15.78C15.09 15.78 14.77 15.65 14.52 15.4Z"/>
-                    </svg>
-                    Fale Conosco no WhatsApp
-                </a>
-                <!-- Existing Contact Buttons -->
-                <a href="mailto:rafaeljamur@gmail.com" class="flex items-center bg-blue-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 transition duration-300">
-                    <i data-lucide="mail" class="w-6 h-6 mr-3"></i>
-                    rafaeljamur@gmail.com
-                </a>
-                <a href="https://linkedin.com/in/jamur" target="_blank" rel="noopener noreferrer" class="flex items-center bg-gray-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-800 hover:scale-105 transition duration-300">
-                    <i data-lucide="linkedin" class="w-6 h-6 mr-3"></i>
-                    linkedin.com/in/jamur
-                </a>
-                <a href="https://github.com/rjamur" target="_blank" rel="noopener noreferrer" class="flex items-center bg-gray-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-800 hover:scale-105 transition duration-300">
-                    <i data-lucide="github" class="w-6 h-6 mr-3"></i>
-                    github.com/rjamur
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 text-center">
-        <div class="container mx-auto px-6">
-            <p>&copy; 2025 AI pra TI. Todos os direitos reservados.</p>
-            <p class="mt-2 text-sm">Consultoria em Soluções Digitais e Automação.</p>
-        </div>
+    <footer>
+        <p>&copy; 2025 AiPrati - Criado por Rafael Jamur.</p>
     </footer>
 
-    <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                // Close mobile menu if open
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
-        });
-
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        if (mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        }
-
-        // Simple animations on scroll (optional, could use Intersection Observer for more advanced)
-        // For demonstration, using basic classes. Full animation libraries would be more robust.
-        const fadeInElements = document.querySelectorAll('.animate-fade-in-down, .animate-fade-in-up, .animate-fade-in-up-delay');
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1 // Trigger when 10% of the element is visible
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('opacity-100', 'translate-y-0');
-                    if (entry.target.classList.contains('animate-fade-in-down')) {
-                        entry.target.classList.add('fade-in-down-active');
-                    } else if (entry.target.classList.contains('animate-fade-in-up')) {
-                        entry.target.classList.add('fade-in-up-active');
-                    } else if (entry.target.classList.contains('animate-fade-in-up-delay')) {
-                        entry.target.classList.add('fade-in-up-delay-active');
-                    }
-                    observer.unobserve(entry.target); // Stop observing once animated
-                }
-            });
-        }, observerOptions);
-
-        fadeInElements.forEach(el => {
-            el.classList.add('opacity-0', 'transform'); // Initial state for animation
-            if (el.classList.contains('animate-fade-in-down')) {
-                el.classList.add('-translate-y-4');
-            } else if (el.classList.contains('animate-fade-in-up') || el.classList.contains('animate-fade-in-up-delay')) {
-                el.classList.add('translate-y-4');
-            }
-            observer.observe(el);
-        });
-
-        // Tailwind CSS custom animations (add to your CSS if not using a build process)
-        // For this example, these are "simulated" by adding classes.
-        // In a real Tailwind setup, you'd configure them in tailwind.config.js
-        /*
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in-down-active { animation: fadeInDown 0.8s ease-out forwards; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in-up-active { animation: fadeInUp 0.8s ease-out forwards; }
-
-        @keyframes fadeInUpDelay {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in-up-delay-active { animation: fadeInUpDelay 1.2s ease-out forwards; }
-        */
-    </script>
 </body>
 </html>
