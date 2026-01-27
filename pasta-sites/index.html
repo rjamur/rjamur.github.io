@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebDev Econômico - Rafa</title>
+    
+    <!-- Tailwind CSS (Estilos) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React e ReactDOM (Motor do Site) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel (Para entender o código React no navegador) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Onde o React vai montar o site -->
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Componente Principal
+        const App = () => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [scrolled, setScrolled] = useState(false);
+
+            // Efeito para detectar rolagem e mudar a cor da barra
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                lucide.createIcons(); // Carregar ícones iniciais
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            // Re-renderizar ícones quando o menu mudar
+            useEffect(() => {
+                lucide.createIcons();
+            }, [isMenuOpen]);
+
+            return (
+                <div className="min-h-screen flex flex-col">
+                    
+                    {/* Navegação */}
+                    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`}>
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center">
+                                    <i data-lucide="code" className="h-8 w-8 text-indigo-600 mr-2"></i>
+                                    <span className={`text-xl font-bold ${scrolled ? 'text-gray-900' : 'text-gray-900 md:text-white'}`}>
+                                        WebDev <span className="text-indigo-600">Econômico</span>
+                                    </span>
+                                </div>
+                                
+                                {/* Menu Desktop */}
+                                <div className="hidden md:flex space-x-8">
+                                    <a href="#video" className={`hover:text-indigo-500 font-medium ${scrolled ? 'text-gray-700' : 'text-white'}`}>O Vídeo</a>
+                                    <a href="#metodo" className={`hover:text-indigo-500 font-medium ${scrolled ? 'text-gray-700' : 'text-white'}`}>Método</a>
+                                    <a href="#servicos" className={`hover:text-indigo-500 font-medium ${scrolled ? 'text-gray-700' : 'text-white'}`}>Serviços</a>
+                                    <a href="#contato" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">Fale Comigo</a>
+                                </div>
+
+                                {/* Botão Mobile */}
+                                <div className="md:hidden">
+                                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-700 focus:outline-none p-2">
+                                        <i data-lucide={isMenuOpen ? "x" : "menu"} className={`h-8 w-8 ${scrolled || isMenuOpen ? 'text-gray-800' : 'text-white'}`}></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Menu Mobile Dropdown */}
+                        {isMenuOpen && (
+                            <div className="md:hidden bg-white shadow-xl absolute w-full left-0 top-full border-t z-50">
+                                <div className="px-4 py-4 space-y-3 flex flex-col">
+                                    <a href="#video" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 hover:text-indigo-600 py-2">O Vídeo</a>
+                                    <a href="#metodo" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 hover:text-indigo-600 py-2">O Método</a>
+                                    <a href="#servicos" onClick={() => setIsMenuOpen(false)} className="block text-gray-700 hover:text-indigo-600 py-2">Serviços</a>
+                                    <a href="#contato" onClick={() => setIsMenuOpen(false)} className="block bg-indigo-600 text-white text-center px-4 py-3 rounded-md mt-2">Entrar em Contato</a>
+                                </div>
+                            </div>
+                        )}
+                    </nav>
+
+                    {/* Hero Section (Topo) */}
+                    <header className="relative bg-gray-900 pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 to-gray-900 opacity-95"></div>
+                        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#4f46e5 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+
+                        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center md:text-left flex flex-col md:flex-row items-center">
+                            <div className="w-full md:w-1/2 md:pr-10 mb-10 md:mb-0">
+                                <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-sm font-semibold mb-6 border border-indigo-500/30">
+                                    <i data-lucide="map-pin" className="w-4 h-4 mr-2"></i>
+                                    Direto de Curitiba (Reitoria / HC)
+                                </div>
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+                                    Sites Profissionais a <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Custo Baixo</span>.
+                                </h1>
+                                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                                    Aprenda a usar ferramentas Open Source e servidores gratuitos. Autonomia total, sem mensalidades abusivas.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                    <a href="#contato" className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition shadow-lg flex items-center justify-center">
+                                        Quero Aprender
+                                        <i data-lucide="arrow-right" className="ml-2 h-5 w-5"></i>
+                                    </a>
+                                    <a href="#video" className="px-8 py-4 glass-effect hover:bg-white/20 text-white font-semibold rounded-lg transition border border-white/20 flex items-center justify-center">
+                                        Ver o Vídeo
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Área do Vídeo */}
+                            <div id="video" className="w-full md:w-1/2 relative">
+                                <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-800 bg-gray-800 aspect-video group cursor-pointer">
+                                    {/* Placeholder do Player */}
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 hover:bg-gray-800 transition">
+                                        <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                            <i data-lucide="play" className="h-8 w-8 text-white ml-1"></i>
+                                        </div>
+                                        <p className="mt-4 text-gray-400 font-medium">Assista ao vídeo gravado aqui na rua</p>
+                                    </div>
+                                    
+                                    {/* Tag 'Gravando Agora' */}
+                                    <div className="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse flex items-center">
+                                        <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
+                                        GRAVANDO NA RUA
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Diferenciais */}
+                    <section id="metodo" className="py-20 bg-white">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="text-center max-w-3xl mx-auto mb-16">
+                                <h2 className="text-3xl font-bold text-gray-900 mb-4">Filosofia Open Source</h2>
+                                <p className="text-lg text-gray-600">
+                                    Fugimos dos construtores de sites caros. Usamos Linux, Python e a nuvem a seu favor.
+                                </p>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-10">
+                                <div className="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition">
+                                    <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                                        <i data-lucide="dollar-sign" className="h-7 w-7 text-green-600"></i>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-gray-900 mb-3">Custo Zero Inicial</h3>
+                                    <p className="text-gray-600">
+                                        Google Cloud Free Tier e AWS Free Tier. Hospedagem profissional sem gastar nada no começo.
+                                    </p>
+                                </div>
+
+                                <div className="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition">
+                                    <div className="w-14 h-14 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                                        <i data-lucide="code" className="h-7 w-7 text-indigo-600"></i>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-gray-900 mb-3">Código Real</h3>
+                                    <p className="text-gray-600">
+                                        Sem "arrasta e solta" limitado. Você aprende o que está por trás ou entregamos código limpo e portável.
+                                    </p>
+                                </div>
+
+                                <div className="bg-gray-50 rounded-xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition">
+                                    <div className="w-14 h-14 bg-orange-100 rounded-lg flex items-center justify-center mb-6">
+                                        <i data-lucide="server" className="h-7 w-7 text-orange-600"></i>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-gray-900 mb-3">Liberdade</h3>
+                                    <p className="text-gray-600">
+                                        Seu site é seu arquivo. Leve para onde quiser, rode no seu próprio servidor Ubuntu ou na nuvem.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Serviços */}
+                    <section id="servicos" className="py-20 bg-gray-50">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex flex-col md:flex-row gap-12 items-center">
+                                <div className="w-full md:w-1/2">
+                                <div className="rounded-2xl overflow-hidden shadow-lg h-96 bg-gray-800 relative flex items-center justify-center">
+                                    <div className="text-center p-8">
+                                        <i data-lucide="terminal" className="w-20 h-20 text-green-400 mx-auto mb-4"></i>
+                                        <code className="text-green-400 text-sm block bg-black p-4 rounded text-left">
+                                            $ sudo apt install nginx<br/>
+                                            $ python3 manage.py runserver<br/>
+                                            > Servidor rodando...
+                                        </code>
+                                    </div>
+                                </div>
+                                </div>
+                                <div className="w-full md:w-1/2">
+                                    <h2 className="text-3xl font-bold text-gray-900 mb-6">O que ensino/faço?</h2>
+                                    <div className="space-y-4">
+                                        {[
+                                        "Sites Institucionais Rápidos",
+                                        "Consultoria em Cloud Gratuita (Google/Oracle)",
+                                        "Aulas de Python e Web Development",
+                                        "Migração de sites caros para VPS Linux",
+                                        ].map((item, index) => (
+                                        <div key={index} className="flex items-start">
+                                            <i data-lucide="check-circle" className="h-6 w-6 text-indigo-600 mt-0.5 flex-shrink-0 mr-3"></i>
+                                            <span className="text-lg text-gray-700">{item}</span>
+                                        </div>
+                                        ))}
+                                    </div>
+                                    <div className="mt-8">
+                                        <p className="text-sm text-gray-500 italic border-l-4 border-indigo-300 pl-4 py-2 bg-white rounded-r-lg">
+                                        "Meu objetivo é te dar independência digital. Nada de ficar refém de agências." — Rafa
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Chamada Local */}
+                    <section className="py-16 bg-indigo-900 text-white relative overflow-hidden">
+                        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6">Está aqui pela Reitoria ou HC?</h2>
+                            <p className="text-xl text-indigo-100 mb-8">
+                                Estou na região gravando agora. Vamos conversar sobre como colocar sua ideia no ar hoje mesmo.
+                            </p>
+                            <a href="#contato" className="inline-block bg-white text-indigo-900 font-bold text-lg px-8 py-4 rounded-lg hover:bg-gray-100 transition shadow-lg">
+                                Me Chame no WhatsApp
+                            </a>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer id="contato" className="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="grid md:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <div className="flex items-center text-white text-xl font-bold mb-4">
+                                        <i data-lucide="code" className="h-6 w-6 mr-2"></i>
+                                        WebDev Econômico
+                                    </div>
+                                    <p className="mb-4">Soluções Open Source para a web.</p>
+                                    <div className="flex items-center space-x-2 text-sm">
+                                        <i data-lucide="map-pin" className="h-4 w-4"></i>
+                                        <span>Curitiba - PR (Centro / Alto da Glória)</span>
+                                    </div>
+                                </div>
+                                <div className="md:text-right">
+                                    <h3 className="text-white font-semibold mb-4">Contato</h3>
+                                    <a href="#" className="text-indigo-400 hover:text-indigo-300 font-medium block">rafa@exemplo.com.br</a>
+                                    <p className="mt-2 text-xs text-gray-600">
+                                        © 2026 Desenvolvido com código limpo.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+
+
