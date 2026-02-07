@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aí para Ti - Unindo Pessoas e Organizações</title>
+    <title>AIpraTI Soluções - Unindo Pessoas e Organizações</title>
     <link rel="stylesheet" href="style.css">
     <style>
         /* Estilo rápido para visualização */
         :root { --primary: #2c3e50; --accent: #27ae60; --light: #ecf0f1; }
-        body { font-family: sans-serif; margin: 0; color: var(--primary); background: var(--light); }
+        body { font-family: sans-serif; margin: 0; color: var(--primary); background: var(--light); display: flex; flex-direction: column; min-height: 100vh; }
         header { background: var(--primary); color: white; padding: 2rem; text-align: center; }
-        .container { max-width: 1000px; margin: auto; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; padding: 20px; flex: 1; } /* flex: 1 empurra o rodapé para baixo */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .video-placeholder { background: #000; height: 200px; display: flex; align-items: center; justify-content: center; color: white; border-radius: 8px; }
-        #chatbot-bubble { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: white; padding: 15px; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        /* Estilo do Rodapé adicionado */
+        footer { background: var(--primary); color: white; padding: 1.5rem; text-align: center; margin-top: auto; }
+        footer p { margin: 5px 0; }
+        footer small { opacity: 0.7; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Aí para Ti</h1>
+    <h1>AIpraTI Soluções</h1>
     <p>Tecnologia e Automação para Organizações Sociais e Políticas</p>
 </header>
 
@@ -51,6 +55,10 @@
     </section>
 </div>
 
+<footer>
+    <p>&copy; 2026 <strong>AIpraTI Soluções</strong>. Todos os direitos reservados.</p>
+    <p><small>Desenvolvido por Rafael Jamur</small></p>
+</footer>
 
 <script>
   window.chatwootSettings = {"position":"right","type":"standard","launcherTitle":"Converse com a gente."};
@@ -68,8 +76,6 @@
     }
   })(document,"script");
 </script>
-
-
 
 </body>
 </html>
