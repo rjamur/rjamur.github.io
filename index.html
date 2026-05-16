@@ -49,11 +49,11 @@
                 <i data-lucide="arrow-right" class="w-5 h-5"></i>
             </a>
             
-            <!-- Botão que aciona o Modal do Vídeo -->
-            <button onclick="openModal()" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-8 rounded-lg border border-gray-300 shadow-sm transition-all flex items-center justify-center gap-2">
+            <!-- Botão que abre o vídeo diretamente no YouTube -->
+            <a href="https://www.youtube.com/watch?v=CJ6w4yS5dNs" target="_blank" rel="noopener noreferrer" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-8 rounded-lg border border-gray-300 shadow-sm transition-all flex items-center justify-center gap-2">
                 <i data-lucide="play-circle" class="w-5 h-5 text-red-500"></i>
                 Ver Demonstração
-            </button>
+            </a>
         </div>
 
         <!-- Seção de Benefícios (Cards) -->
@@ -105,13 +105,13 @@
 
             <!-- Substitua o src abaixo pelo ID do seu vídeo Short/Vertical -->
             <!-- Formato recomendado para Shorts: https://www.youtube.com/embed/SEU_ID?autoplay=1&mute=0 -->
-            <div class="relative pt-[177.77%] w-full"> <!-- Proporção 16:9 vertical -->
-                <iframe id="youtubePlayer" 
-                        class="absolute top-0 left-0 w-full h-full" 
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                        title="Demonstração Aí para Ti" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            <div class="relative pt-[56.25%] w-full"> <!-- Proporção 16:9 -->
+                <iframe id="youtubePlayer"
+                        class="absolute top-0 left-0 w-full h-full"
+                        src=""
+                        title="Demonstração Aí para Ti"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                 </iframe>
             </div>
@@ -126,7 +126,7 @@
         const modal = document.getElementById('videoModal');
         const player = document.getElementById('youtubePlayer');
         // Coloque aqui o ID do seu vídeo do YouTube real
-        const videoId = "dQw4w9WgXcQ"; 
+        const videoId = "CJ6w4yS5dNs"; 
 
         function openModal() {
             modal.classList.remove('hidden');
